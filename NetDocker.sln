@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37012.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetDocker", "NetDocker\NetDocker.csproj", "{59A5F419-746D-457C-B012-A827D65DBD38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{9DBA1703-2A2A-4732-970F-5BB63D00AAF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{523103B8-139C-4271-824F-F075667386F8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59A5F419-746D-457C-B012-A827D65DBD38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59A5F419-746D-457C-B012-A827D65DBD38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59A5F419-746D-457C-B012-A827D65DBD38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59A5F419-746D-457C-B012-A827D65DBD38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DBA1703-2A2A-4732-970F-5BB63D00AAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DBA1703-2A2A-4732-970F-5BB63D00AAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DBA1703-2A2A-4732-970F-5BB63D00AAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DBA1703-2A2A-4732-970F-5BB63D00AAF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{523103B8-139C-4271-824F-F075667386F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{523103B8-139C-4271-824F-F075667386F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{523103B8-139C-4271-824F-F075667386F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{523103B8-139C-4271-824F-F075667386F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0F1573DF-59B8-4A9D-8A37-2C57190534A0}
+	EndGlobalSection
+EndGlobal

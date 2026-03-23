@@ -1,0 +1,6 @@
+@NetDocker_HostAddress = http://localhost:5197
+
+GET {{NetDocker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
