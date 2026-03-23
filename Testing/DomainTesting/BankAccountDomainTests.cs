@@ -1,15 +1,10 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace Testing.DomainTesting;
 
-public class BankAccountTests : IntegrationTest
+public class BankAccountDomainTests(PostgresTestFixture fixture) : IntegrationTest(fixture)
 {
-    public BankAccountTests(PostgresTestFixture fixture) : base(fixture)
-    {
-    }
-
     [Fact]
     public async Task GetSeededAccount_Should_ReturnOk()
     {
@@ -17,8 +12,7 @@ public class BankAccountTests : IntegrationTest
         Guid id = new("11111111-1111-1111-1111-111111111111");
 
         // Act
-        var account = await _context.BankAccounts
-            .FirstOrDefaultAsync(x => x.Id == id);
+        var account = await _context.BankAccounts.FirstOrDefaultAsync(x => x.Id == id);
 
         // Assert
         Assert.NotNull(account);
@@ -31,11 +25,11 @@ public class BankAccountTests : IntegrationTest
         // Arrange
         Guid id = new("11111111-1111-1111-1111-111111111111");
 
-        var transaction1 = new BankTransaction(1.6m, id);
-        var transaction2 = new BankTransaction(4.7m, id);
+        var movement1 = new BankTransaction((decimal)1.6, id);
+        var movement2 = new BankTransaction((decimal)4.7, id);
 
         // Act
-        await _context.Transactions.AddRangeAsync(transaction1, transaction2);
+        await _context.Transactions.AddRangeAsync(movement1, movement2);
         await _context.SaveChangesAsync();
 
         var account = await _context.BankAccounts
@@ -47,9 +41,9 @@ public class BankAccountTests : IntegrationTest
         Assert.Equal("Test Account 1", account.Name);
         Assert.Equal(2, account.Transactions.Count);
 
-        Assert.Contains(account.Transactions, t => t.Id == transaction1.Id);
-        Assert.Contains(account.Transactions, t => t.Id == transaction2.Id);
-        Assert.Equal(6.3m, account.Transactions.Sum(x => x.Amount));
+        Assert.Contains(account.Transactions, x => x.Id == movement1.Id);
+        Assert.Contains(account.Transactions, x => x.Id == movement2.Id);
+        Assert.Equal((decimal)6.3, account.Transactions.Sum(x => x.Amount));
     }
 
     [Fact]
@@ -70,5 +64,31 @@ public class BankAccountTests : IntegrationTest
         Assert.Equal(ba.Id, account.Id);
         Assert.Equal("name1", account.Name);
         Assert.Equal(34, account.Balance);
+    }
+
+    [Fact]
+    public void Withdraw_Should_Decrease_Balance_When_Amount_Is_Less_Than_Balance()
+    {
+        // Arrange
+        var account = new BankAccount(Guid.NewGuid(), "Test Account", 100m);
+
+        // Act
+        account.Withdraw(40m);
+
+        // Assert
+        Assert.Equal(60m, account.Balance);
+        Assert.Single(account.Transactions);
+        Assert.Equal(-40m, account.Transactions.First().Amount);
+    }
+
+    [Fact]
+    public void Withdraw_Should_Throw_Exception_When_Amount_Is_Negative()
+    {
+        // Arrange
+        var account = new BankAccount(Guid.NewGuid(), "Test Account", 100m);
+
+        // Act & Assert
+        var ex = Assert.Throws<ArgumentException>(() => account.Withdraw(-10m));
+        Assert.Equal("Amount must be greater than 0 (Parameter 'amount')", ex.Message);
     }
 }

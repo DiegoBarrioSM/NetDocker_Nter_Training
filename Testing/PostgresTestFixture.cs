@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Testcontainers.PostgreSql;
-using Xunit;
+using Testing;
 
 public class PostgresTestFixture : IAsyncLifetime
 {
@@ -28,7 +28,10 @@ public class PostgresTestFixture : IAsyncLifetime
             .Options;
 
         await using var context = new AppDbContext(DbOptions);
+
+        //await context.Database.EnsureCreatedAsync();
         await context.Database.MigrateAsync();
+
         await DbSeeder.SeedAsync(context);
     }
 

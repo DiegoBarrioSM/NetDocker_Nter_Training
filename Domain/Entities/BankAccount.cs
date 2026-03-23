@@ -22,4 +22,18 @@ public class BankAccount
     public decimal Balance { get; private set; }
 
     public ICollection<BankTransaction> Transactions { get; private set; } = [];
+
+    public void Withdraw(decimal amount)
+    {
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be greater than 0", nameof(amount));
+
+        if (amount > Balance)
+            throw new InvalidOperationException("Insufficient funds");
+
+        var transaction = new BankTransaction(-amount, Id);
+        Transactions.Add(transaction);
+
+        Balance -= amount;
+    }
 }

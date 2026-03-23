@@ -1,7 +1,8 @@
 ﻿using Domain.Entities;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data;
+namespace Testing;
 
 public static class DbSeeder
 {

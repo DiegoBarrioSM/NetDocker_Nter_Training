@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Data;
-using Xunit;
+
+namespace Testing;
 
 public abstract class IntegrationTest : IClassFixture<PostgresTestFixture>
 {
