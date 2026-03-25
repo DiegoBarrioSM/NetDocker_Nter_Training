@@ -1,0 +1,36 @@
+﻿services:
+  api:
+    build:
+      context: ..          
+      dockerfile: NetDocker/Dockerfile
+    container_name: api
+    ports:
+      - "8080:8080"       # HTTP
+      - "8081:8081"       # HTTPS
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+      DOTNET_RUNNING_IN_CONTAINER: "true"
+      ASPNETCORE_ENVIRONMENT: "Docker"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_DB: dbDocker
+      POSTGRES_USER: userDocker
+      POSTGRES_PASSWORD: postgres      
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_docker:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U userDocker -d dbDocker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_docker:
