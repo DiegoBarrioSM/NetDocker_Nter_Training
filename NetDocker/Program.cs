@@ -6,12 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString")));
+if (builder.Environment.IsEnvironment("Aspire"))
+{
+    builder.AddNpgsqlDbContext<AppDbContext>("dbAspire");
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString")));
+}
 
 builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
 builder.Services.AddScoped<IBankAccountService, BankAccountService>();
@@ -25,7 +33,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 if (app.Environment.IsDevelopment() ||
-    app.Environment.IsEnvironment("Docker"))
+    app.Environment.IsEnvironment("Docker") ||
+    app.Environment.IsEnvironment("Aspire"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
